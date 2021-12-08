@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-class BingoBoard(object)
-    def __init__(self, board: List[List[int]]):
+class BingoBoard(object):
+    def __init__(self, board):
         # Each square is a dict that contains 'val' and 'marked' keys
         # 'val' => actual value, 'marked' => True if marked
         self.board = []
@@ -25,9 +25,9 @@ class BingoBoard(object)
                 if square['val'] in self.val_to_loc_map:
                     self.val_to_loc_map[square['val']].append((row_i, col_i))
                 else:
-                    self.val_to_loc_map[square['val']] = list((row_i, col_i))
+                    self.val_to_loc_map[square['val']] = [(row_i, col_i)]
 
-    def has_won(self):
+    def get_has_won(self):
         return self.has_won
 
     def check_row_for_win(self, row_i):
@@ -44,7 +44,7 @@ class BingoBoard(object)
     def check_col_for_win(self, col_i):
         is_col_a_winner = True
 
-        for row_i in xrange(len(self.board)):
+        for row_i in range(len(self.board)):
             square = self.board[row_i][col_i]
             if not square['marked']:
                 is_col_a_winner = False
