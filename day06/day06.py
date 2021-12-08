@@ -6,23 +6,26 @@ def read_input_file(inputfile):
     fin.close()
     return lanternfish
 
-def populate_lanternfish(lanternfish, num_days):
-    for day in range(num_days):
-        new_fish = []
-        for i in range(len(lanternfish)):
-            if lanternfish[i] == 0:
-                lanternfish[i] = 6
-                new_fish.append(8)
-            else:
-                lanternfish[i] -= 1
-        lanternfish = lanternfish + new_fish
+def get_lanternfish_population(lanternfish, num_days):
+    lanternfish_states = [0] * 9
+    for fish in lanternfish:
+        lanternfish_states[fish] += 1
 
-    return lanternfish
+    for day in range(num_days):
+        new_lanternfish = lanternfish_states[0]
+        for i in range(0, len(lanternfish_states)-1):
+            lanternfish_states[i] = lanternfish_states[i+1]
+        lanternfish_states[8] = new_lanternfish
+        lanternfish_states[6] += new_lanternfish
+
+    return sum(lanternfish_states)
 
 lanternfish = read_input_file('test_input.txt')
-lanternfish = populate_lanternfish(lanternfish, 18)
-print('Test input solution: %d' % len(lanternfish))
+num_lanternfish = get_lanternfish_population(lanternfish, 18)
+print('Test input solution: %d' % num_lanternfish)
 lanternfish = read_input_file('input_day06.txt')
-lanternfish = populate_lanternfish(lanternfish, 80)
-print('Part one solution: %d' % len(lanternfish))
+num_lanternfish = get_lanternfish_population(lanternfish, 80)
+print('Part one solution: %d' % num_lanternfish)
+num_lanternfish = get_lanternfish_population(lanternfish, 256)
+print('Part two solution: %d' % num_lanternfish)
 
