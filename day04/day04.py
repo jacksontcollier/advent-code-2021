@@ -34,3 +34,22 @@ def solve_part_one(inputfile):
                 if board.get_has_won():
                     return board.calc_final_score()
 
+def solve_part_two(inputfile):
+    values, bingo_boards = parse_inputfile(inputfile)
+
+    for val in values:
+        i = 0
+        while i < len(bingo_boards):
+            board = bingo_boards[i]
+            if board.has_val(val):
+                board.mark_val(val)
+                if board.get_has_won():
+                    if len(bingo_boards) == 1:
+                        return bingo_boards[0].calc_final_score()
+                    else:
+                        del bingo_boards[i]
+                else:
+                    i += 1
+            else:
+                i += 1
+

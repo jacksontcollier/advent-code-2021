@@ -78,3 +78,14 @@ class BingoBoard(object):
         self.final_score = sum_unmarked * self.most_recently_marked_val
         return self.final_score
 
+    def print_board_marks(self):
+        for row in self.board:
+            for square in row:
+                val = ''
+                if square['marked']:
+                    val = 'T'
+                else:
+                    val = 'F'
+                print('%s ' % val, end='')
+            print('\n', end='')
+
