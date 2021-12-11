@@ -8,9 +8,13 @@ class OctopusGrid(object):
         self.grid = grid
         self.energy_level_threshold = 9
         self.num_flashes = 0
+        self.synchronization_step = None
 
     def get_num_flashes(self):
         return self.num_flashes
+
+    def get_synchronization_step(self):
+        return self.synchronization_step
 
     def get_adjacent_pos(self, x, y):
         adjacent_pos = [
@@ -25,11 +29,18 @@ class OctopusGrid(object):
 
         return adjacent_pos
 
-    def simulate_nsteps(self, n):
-        for i in range(n):
-            self.simulate_step()
+    def synchronize(self):
+        step = 0
+        while not self.is_synchronized():
+            self.simulate_step(step)
+            step += 1
+        self.synchronization_step = step
 
-    def simulate_step(self):
+    def simulate_nsteps(self, n):
+        for step in range(n):
+            self.simulate_step(step)
+
+    def simulate_step(self, step):
         pending_flash_pos = Queue()
         flash_pos_set = set()
 
@@ -55,4 +66,14 @@ class OctopusGrid(object):
 
             self.num_flashes += 1
             self.grid[x][y] = 0
+
+    def is_synchronized(self):
+        val = self.grid[0][0]
+
+        for row in self.grid:
+            for energy_level in row:
+                if energy_level != val:
+                    return False
+
+        return True
 
